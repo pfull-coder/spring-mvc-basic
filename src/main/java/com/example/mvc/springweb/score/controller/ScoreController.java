@@ -41,7 +41,7 @@ public class ScoreController {
     //학생 전체 성적 정보 조회 요청처리
     @GetMapping("/score/list")
     public String list(Model model) {
-        List<Score> scoreList = scoreRepository.selectAllScores();
+        List<Score> scoreList = scoreService.addGradeService();
         model.addAttribute("scores", scoreList);
         return "score/score-list";
     }
@@ -55,12 +55,33 @@ public class ScoreController {
         // 삭제 완료 후 /list요청의 jsp페이지로 보낼 데이터 세팅
         ra.addFlashAttribute("msg", "delOk");
 
-        // 단순히 score-list.jsp를 열면
-        // 조회데이터가 없는 상태로 열리기 때문에 아무 데이터도 안나온다.
-        // 따라서 /score/list로 리다이렉트하여 재요청해야 함.
+        //단순히 score-list.jsp를 열면 조회데이터가 없는 상태로 열리기
+        //때문에 아무 데이터도 안나온다.
+        //따라서 /score/list로 리다이렉트하여 재요청해야 함.
 
 //        return "score/score-list";
         return "redirect:/score/list";
+    }
+
+    //학생 성적 개별조회 요청 화면 열기
+    @GetMapping("/score/find-one")
+    public String findOne() {
+        return "score/search";
+    }
+
+    //학생 성적 개별조회 요청 처리
+    @GetMapping("/score/search")
+    public String search(String stuNum, Model model, RedirectAttributes ra) {
+
+        try {
+            int num = Integer.parseInt(stuNum);
+            Score findScore = scoreRepository.selectOne(num);
+            model.addAttribute("score", findScore);
+            return "score/search-result";
+        } catch (NumberFormatException e) {
+            ra.addFlashAttribute("msg", "숫자로만 입력하세요!");
+            return "redirect:/score/find-one";
+        }
     }
 
 }

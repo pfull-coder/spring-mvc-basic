@@ -1,5 +1,6 @@
 package com.example.mvc.springweb.score.repository;
 
+
 import com.example.mvc.springweb.score.domain.Score;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -25,7 +26,6 @@ public class MemoryScoreRepository implements ScoreRepository {
     @Override
     public void insertScore(Score score) {
         scoreMap.put(score.getStuNum(), score);
-        System.out.println(scoreMap);
     }
 
     @Override
