@@ -4,6 +4,7 @@ import com.example.mvc.springweb.score.domain.Score;
 import com.example.mvc.springweb.score.repository.ScoreRepository;
 import com.example.mvc.springweb.score.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ public class ScoreController {
     private final ScoreService scoreService;
 
     @Autowired
-    public ScoreController(ScoreRepository scoreRepository, ScoreService scoreService) {
+    public ScoreController(@Qualifier("jdbcScoreRepo") ScoreRepository scoreRepository, ScoreService scoreService) {
         this.scoreRepository = scoreRepository;
         this.scoreService = scoreService;
     }

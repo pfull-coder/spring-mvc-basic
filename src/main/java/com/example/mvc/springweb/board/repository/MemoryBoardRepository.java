@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Repository
+@Repository("memoryBoardRepo")
 public class MemoryBoardRepository implements BoardRepository {
 
     private static Map<Integer, Board> boardMap = new HashMap<>();
