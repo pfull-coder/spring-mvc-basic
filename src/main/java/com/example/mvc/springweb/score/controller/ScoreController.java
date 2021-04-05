@@ -1,6 +1,7 @@
 package com.example.mvc.springweb.score.controller;
 
 import com.example.mvc.springweb.score.domain.Score;
+import com.example.mvc.springweb.score.mapper.ScoreMyBatisMapper;
 import com.example.mvc.springweb.score.repository.ScoreRepository;
 import com.example.mvc.springweb.score.service.ScoreService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,15 @@ public class ScoreController {
     //의존 관계 설정
     private final ScoreRepository scoreRepository;
     private final ScoreService scoreService;
+    private final ScoreMyBatisMapper scoreMapper;
+
 
     @Autowired
-    public ScoreController(@Qualifier("jdbcScoreRepo") ScoreRepository scoreRepository, ScoreService scoreService) {
+    public ScoreController(@Qualifier("jdbcScoreRepo") ScoreRepository scoreRepository,
+                           ScoreService scoreService, ScoreMyBatisMapper scoreMapper) {
         this.scoreRepository = scoreRepository;
         this.scoreService = scoreService;
+        this.scoreMapper = scoreMapper;
     }
 
     //학생 성적 입력화면을 열어주는 요청 처리
@@ -52,7 +57,8 @@ public class ScoreController {
     // RedirectAttributes - 리다이렉트하는 경로로 데이터를 보내주는 객체
     public String delete(int stuNum, RedirectAttributes ra) {
 
-        scoreRepository.deleteScore(stuNum);
+//        scoreRepository.deleteScore(stuNum);
+        scoreMapper.deleteScore(stuNum);
         // 삭제 완료 후 /list요청의 jsp페이지로 보낼 데이터 세팅
         ra.addFlashAttribute("msg", "delOk");
 
@@ -76,7 +82,8 @@ public class ScoreController {
 
         try {
             int num = Integer.parseInt(stuNum);
-            Score findScore = scoreRepository.selectOne(num);
+//            Score findScore = scoreRepository.selectOne(num);
+            Score findScore = scoreMapper.selectOne(num);
             model.addAttribute("score", findScore);
             return "score/search-result";
         } catch (NumberFormatException e) {

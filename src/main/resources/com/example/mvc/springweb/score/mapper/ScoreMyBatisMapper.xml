@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace에는 Mapper로 사용할 인터페이스의 풀경로이름 -->
+<mapper namespace="com.example.mvc.springweb.score.mapper.ScoreMyBatisMapper">
+
+    <!--  id에는 인터페이스의 메서드 이름을 적음  -->
+    <insert id="insertScore">
+        INSERT INTO tbl_score
+        (stu_num, name, kor, eng, math, total, average)
+        VALUES (seq_score.nextval, #{name}, #{kor}, #{eng}
+        , #{math}, #{total}, #{average})
+    </insert>
+
+    <!-- RESULTMAP : 자바의 이름규칙과 SQL의 이름 규칙이 다를 때 맞춰주는 것 -->
+    <resultMap id = "scoreMap" type = "com.example.mvc.springweb.score.domain.Score">
+        <!-- property는 위 type의 클래스의 필드명 column은 db table 컬럼명 -->
+        <result property = "stuNum" column="stu_num" />
+    </resultMap>
+
+    <select id="selectAllScores" resultMap="scoreMap">
+        SELECT * FROM tbl_score
+    </select>
+
+    <select id="selectOne" resultMap="scoreMap">>
+        SELECT * FROM tbl_score
+        WHERE stu_num = #{stuNum}
+    </select>
+
+    <delete id="deleteScore">
+        DELETE FROM tbl_score
+        WHERE stu_num = #{stuNum}
+    </delete>
+
+</mapper>

@@ -11,11 +11,13 @@ import java.util.List;
 public interface ScoreMyBatisMapper {
 
         //점수 저장 기능
-        @Insert("INSERT INTO tbl_score " +
-                " (stu_num, name, kor, eng, math, total, average) "+
-                " VALUES (seq_score.nextval, #{score.name}, #{score.kor}, #{score.eng}," +
-                " #{score.math}, #{score.total}, #{score.average}")
-        void insertScore(@Param("score") Score score);
+//        @Insert("INSERT INTO tbl_score " +
+//                " (stu_num, name, kor, eng, math, total, average) "+
+//                " VALUES (seq_score.nextval, #{score.name}, #{score.kor}, #{score.eng}," +
+//                " #{score.math}, #{score.total}, #{score.average}")
+//        void insertScore(@Param("score") Score score);
+
+        void insertScore(Score score);
 
         //전체 점수 조회 기능
         List<Score> selectAllScores();

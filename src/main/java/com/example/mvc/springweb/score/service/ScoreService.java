@@ -16,7 +16,6 @@ public class ScoreService {
     private final ScoreRepository scoreRepository;
     private final ScoreMyBatisMapper scoreMapper;
 
-
     @Autowired
     public ScoreService(@Qualifier("jdbcScoreRepo") ScoreRepository scoreRepository, ScoreMyBatisMapper scoreMapper) {
         this.scoreRepository = scoreRepository;
@@ -32,7 +31,8 @@ public class ScoreService {
 
     //점수를 조회한 후 컨트롤러에게 학점정보를 추가 리턴한다.
     public List<Score> addGradeService() {
-        List<Score> scoreList = scoreRepository.selectAllScores();
+//        List<Score> scoreList = scoreRepository.selectAllScores();
+        List<Score> scoreList = scoreMapper.selectAllScores();
 
         for (Score score : scoreList) {
             if (score.getAverage() >= 90) {
