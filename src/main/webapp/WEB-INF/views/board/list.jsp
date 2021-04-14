@@ -9,11 +9,6 @@
 </head>
 <body>
 
-<c:if test="${articles.size() <= 0}">
-	<p>게시물이 존재하지 않습니다.</p>
-</c:if>
-
-<c:if test="${articles.size() > 0}">
 
 <h1>게시글 목록</h1>
 
@@ -25,29 +20,46 @@
 		<td>비고</td>
 	</tr>
 
-	<%-- 컨트롤러가 가져온 게시글 데이터를 반복하여 출력하세요. --%>
-	<%-- 게시물 개수가 0개일 경우 목록대신 "게시물이 존재하지 않습니다." 출력 --%>
-
-	<c:forEach var="article" items="${articles}">
-		<tr>
-			<td>${article.boardNo}</td>
-			<td>${article.writer}</td>
-			<td>
-				<a href="/board/content?boardNo=${article.boardNo}">${article.title}</a>
-			</td>
-			<td>
-				<a href="/board/delete?boardNo=${article.boardNo}">[삭제]</a>
-			</td>
-		</tr>
-	</c:forEach>
-
 </table>
 
-</c:if>
 
 <p>
-	<a href="/board/write">게시글 작성하기</a>
+	<a href="#">게시글 작성하기</a>
 </p>
+
+
+<script>
+	function makeArticleDOM(articles) {
+		if (articles === null || articles.length <= 0) {
+			alert('게시글이 없습니다!');
+		} else {
+			const $frag = document.createDocumentFragment();
+			for (let article of articles) {
+				const {boardNo, writer, title} = article;
+				const $tr = document.createElement('tr');
+				let datas = '';
+				datas += '<td>' + boardNo + '</td>';
+				datas += '<td>' + writer + '</td>';
+				datas += '<td><a href="/api/board/detail?boardNo='+ boardNo +'">' + title + '</a></td>';
+				datas += '<td><a href="#">[삭제]</a></td>';
+
+				$tr.innerHTML = datas;
+				$frag.appendChild($tr);
+			}
+			document.querySelector('table').appendChild($frag);
+		}
+	}
+	function getList() {
+		fetch('/api/board/')
+			.then(res => res.json())
+			.then(articles => {
+				makeArticleDOM(articles);
+			});
+	}
+	(function() {
+		getList();
+	}());
+</script>
 
 </body>
 </html>
